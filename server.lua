@@ -3,11 +3,12 @@ local hidePlayers = {}
 local players = {}
 
 QBCore.Commands.Add("nameplate", Lang:t("commands.nameplate_description"), {}, false, function(source)
-    if hidePlayers[source] ~= nil then
-        hidePlayers[source] = nil
+    local player = QBCore.Functions.GetPlayer(source)
+    if hidePlayers[player.PlayerData.citizenid] ~= nil then
+        hidePlayers[player.PlayerData.citizenid] = nil
         TriggerClientEvent('azqb-nameplate:client:show', source, true)
     else
-        hidePlayers[source] = true
+        hidePlayers[player.PlayerData.citizenid] = true
         TriggerClientEvent('azqb-nameplate:client:show', source, false)
     end
 
@@ -15,7 +16,8 @@ QBCore.Commands.Add("nameplate", Lang:t("commands.nameplate_description"), {}, f
 end)
 
 RegisterNetEvent("QBCore:Server:OnPlayerUnload", function(source)
-    hidePlayers[source] = nil
+    local player = QBCore.Functions.GetPlayer(source)
+    hidePlayers[player.PlayerData.citizenid] = nil
 end)
 
 CreateThread(function()
@@ -25,6 +27,7 @@ CreateThread(function()
             local ped = QBCore.Functions.GetPlayer(v)
             tempPlayers[#tempPlayers + 1] = {
                 id = v,
+                cid = ped.PlayerData.citizenid,
                 name = ped.PlayerData.charinfo.firstname .. ' ' .. ped.PlayerData.charinfo.lastname,
             }
         end

@@ -13,14 +13,14 @@ end)
 RegisterNetEvent('azqb-nameplate:client:sync', function(shows, players)
     hidePlayers = shows
 
-    for id, player in pairs(players) do
-        local playeridx = GetPlayerFromServerId(id)
+    for _, player in pairs(players) do
+        local playeridx = GetPlayerFromServerId(player.id)
         local ped = GetPlayerPed(playeridx)
 
         local Tag = CreateFakeMpGamerTag(ped, player.name, false, false, '', false)
         SetMpGamerTagAlpha(Tag, 0, 255)
 
-        if hidePlayers[id] ~= nil then
+        if hidePlayers[player.cid] ~= nil then
             SetMpGamerTagVisibility(Tag, 0, false)
             RemoveMpGamerTag(Tag)
         else
