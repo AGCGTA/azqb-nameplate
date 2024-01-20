@@ -1,13 +1,19 @@
 local Translations = {
     error = {
-        names_deactivated = '他人にネームタグを表示しないようにしました',
+        cooldown = 'クールタイム中...'
     },
-    success = {
-        names_activated = '他人にネームタグを表示するようにしました',
+    info = {
+        invisibled = '%d秒間NPCに紛れ込みます',
+        visible_countdown = 'あと%d秒で名前が表示されます',
+        visibled = '名前が表示されました',
+        can_invisible = '一定時間経過したため再び名前を非表示出来るようになった',
+        keymap_description = '一定時間NPCに紛れ込む'
     },
-    commands = {
-        ["nameplate_description"] = '他人へのネームタグ表示状態を切り替えます'
-    }
+    command = {
+        nameplate = {
+            help = '一定時間名前を非表示にしてNPCに紛れ込む',
+        },
+    },
 }
 
 Lang = Lang or Locale:new({
