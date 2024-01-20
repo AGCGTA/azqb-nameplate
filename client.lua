@@ -4,6 +4,7 @@ local hidePlayers = {}
 local allPlayers = {}
 
 local showName = true
+local distanceDisplay = 30
 
 local gtComponent = {
     GAMER_NAME = 0,
@@ -43,12 +44,15 @@ RegisterKeyMapping("togglename", Lang:t('info.toggle_keymap_description'), 'keyb
 CreateThread(function()
     while true do
         Wait(100)
+        local localCoords = GetEntityCoords(PlayerPedId())
         for _, player in pairs(allPlayers) do
             local playerId = GetPlayerFromServerId(tonumber(player.id))
             if NetworkIsPlayerActive(playerId) then
                 local ped = GetPlayerPed(playerId)
+                local remoteCoords = GetEntityCoords(ped)
+                local distance = #(remoteCoords - localCoords)
                 local tag = CreateMpGamerTag(ped, player.name, false, false, '', 0)
-                if hidePlayers[player.cid] ~= nil or not showName then
+                if distance > distanceDisplay or not HasEntityClearLosToEntity(PlayerPedId(), ped, 17) or hidePlayers[player.cid] ~= nil or not showName then
                     SetMpGamerTagVisibility(tag, gtComponent.GAMER_NAME, false)
                     SetMpGamerTagVisibility(tag, gtComponent.AUDIO_ICON, false)
                 else
