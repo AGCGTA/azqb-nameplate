@@ -7,7 +7,8 @@ local Translations = {
         visible_countdown = 'あと%d秒で名前が表示されます',
         visibled = '名前が表示されました',
         can_invisible = '一定時間経過したため再び名前を非表示出来るようになった',
-        keymap_description = '一定時間NPCに紛れ込む'
+        keymap_description = '一定時間NPCに紛れ込む',
+        toggle_keymap_description = '名前を非表示にする'
     },
     command = {
         nameplate = {

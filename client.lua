@@ -3,6 +3,8 @@ local QBCore = exports['qb-core']:GetCoreObject()
 local hidePlayers = {}
 local allPlayers = {}
 
+local showName = true
+
 local gtComponent = {
     GAMER_NAME = 0,
     CREW_TAG = 1,
@@ -31,8 +33,12 @@ end)
 RegisterCommand("hidename", function()
     TriggerServerEvent("azqb-nameplate:server:hide")
 end, false)
+RegisterKeyMapping("hidename", Lang:t('info.keymap_description'), 'keyboard', 'F9')
 
-RegisterKeyMapping("hidename", Lang:t('info.keymap_description'), 'keyboard', 'F11')
+RegisterCommand("togglename", function()
+    showName = not showName
+end, false)
+RegisterKeyMapping("togglename", Lang:t('info.toggle_keymap_description'), 'keyboard', 'F11')
 
 CreateThread(function()
     while true do
@@ -42,7 +48,7 @@ CreateThread(function()
             if NetworkIsPlayerActive(playerId) then
                 local ped = GetPlayerPed(playerId)
                 local tag = CreateMpGamerTag(ped, player.name, false, false, '', 0)
-                if hidePlayers[player.cid] ~= nil then
+                if hidePlayers[player.cid] ~= nil or not showName then
                     SetMpGamerTagVisibility(tag, gtComponent.GAMER_NAME, false)
                     SetMpGamerTagVisibility(tag, gtComponent.AUDIO_ICON, false)
                 else

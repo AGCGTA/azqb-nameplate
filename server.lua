@@ -9,19 +9,17 @@ RegisterNetEvent("azqb-nameplate:server:hide", function()
     local cid = player.PlayerData.citizenid
     local players = allPlayers
     if cooldownPlayers[cid] ~= nil or hidePlayers[cid] ~= nil then
-        -- TODO: クールタイム中
+        -- クールタイム中
         TriggerClientEvent('QBCore:Notify', src, Lang:t("error.cooldown"), 'error')
     else
-        -- TODO: 非表示処理
+        -- 非表示処理
         hidePlayers[cid] = true
         TriggerClientEvent('azqb-nameplate:client:sync', -1, hidePlayers, players)
-        -- TODO: 30秒間timeout後cooldown
+        -- 30秒間timeout後cooldown
         TriggerClientEvent('QBCore:Notify', src, string.format(Lang:t("info.invisibled"), Config.Invisible / 1000), 'success')
-        -- TriggerClientEvent('QBCore:Notify', src, Lang:t(string.format(, )), 'success')
         SetTimeout(Config.Invisible - Config.WarnCountdown, function()
             -- 警告表示
             TriggerClientEvent('QBCore:Notify', src, string.format(Lang:t("info.visible_countdown"), Config.WarnCountdown / 1000), 'error')
-            -- TriggerClientEvent('QBCore:Notify', src, Lang:t(string.format(, )), 'error')
             SetTimeout(Config.WarnCountdown, function()
                 -- 非表示終了
                 TriggerClientEvent('QBCore:Notify', src, Lang:t("info.visibled"), 'error')
