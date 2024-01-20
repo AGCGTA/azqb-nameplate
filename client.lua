@@ -47,7 +47,7 @@ CreateThread(function()
                     SetMpGamerTagVisibility(tag, gtComponent.AUDIO_ICON, false)
                 else
                     SetMpGamerTagVisibility(tag, gtComponent.GAMER_NAME, true)
-                    SetMpGamerTagVisibility(tag, gtComponent.AUDIO_ICON, NetworkIsPlayerTalking(player.id))
+                    SetMpGamerTagVisibility(tag, gtComponent.AUDIO_ICON, NetworkIsPlayerTalking(playerId))
                     SetMpGamerTagAlpha(tag, gtComponent.AUDIO_ICON, 255)
                 end
             end
