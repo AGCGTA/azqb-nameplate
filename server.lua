@@ -44,6 +44,7 @@ CreateThread(function()
                 cid = v.PlayerData.citizenid,
                 name = v.PlayerData.charinfo.firstname .. ' ' .. v.PlayerData.charinfo.lastname,
             }
+            Wait(0)
         end
 
         table.sort(tempPlayers, function(a, b)
