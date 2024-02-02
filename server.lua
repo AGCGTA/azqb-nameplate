@@ -7,14 +7,13 @@ RegisterNetEvent("azqb-nameplate:server:hide", function()
     local src = source
     local player = QBCore.Functions.GetPlayer(src)
     local cid = player.PlayerData.citizenid
-    local players = allPlayers
     if cooldownPlayers[cid] ~= nil or hidePlayers[cid] ~= nil then
         -- クールタイム中
         TriggerClientEvent('QBCore:Notify', src, Lang:t("error.cooldown"), 'error')
     else
         -- 非表示処理
         hidePlayers[cid] = true
-        TriggerClientEvent('azqb-nameplate:client:sync', -1, hidePlayers, players)
+        TriggerClientEvent('azqb-nameplate:client:hideSync', -1, hidePlayers)
         -- 30秒間timeout後cooldown
         TriggerClientEvent('QBCore:Notify', src, string.format(Lang:t("info.invisibled"), Config.Invisible / 1000), 'success')
         SetTimeout(Config.Invisible - Config.WarnCountdown, function()
@@ -25,7 +24,7 @@ RegisterNetEvent("azqb-nameplate:server:hide", function()
                 TriggerClientEvent('QBCore:Notify', src, Lang:t("info.visibled"), 'error')
                 hidePlayers[cid] = nil
                 cooldownPlayers[cid] = true
-                TriggerClientEvent('azqb-nameplate:client:sync', -1, hidePlayers, players)
+                TriggerClientEvent('azqb-nameplate:client:hideSync', -1, hidePlayers)
                 SetTimeout(Config.Cooldown, function()
                     TriggerClientEvent('QBCore:Notify', src, Lang:t("info.can_invisible"), 'success')
                     cooldownPlayers[cid] = nil
@@ -33,6 +32,10 @@ RegisterNetEvent("azqb-nameplate:server:hide", function()
             end)
         end)
     end
+end)
+
+AddEventHandler('playerJoining', function(source)
+    TriggerClientEvent('azqb-nameplate:client:hideSync', source, hidePlayers)
 end)
 
 CreateThread(function()
@@ -51,7 +54,7 @@ CreateThread(function()
             return a.id < b.id
         end)
         allPlayers = tempPlayers
-        TriggerClientEvent('azqb-nameplate:client:sync', -1, hidePlayers, allPlayers)
+        TriggerClientEvent('azqb-nameplate:client:allSync', -1, allPlayers)
         Wait(1500)
     end
 end)

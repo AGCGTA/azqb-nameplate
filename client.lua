@@ -26,8 +26,11 @@ local gtComponent = {
     MP_TYPING = 16
 }
 
-RegisterNetEvent('azqb-nameplate:client:sync', function(shows, players)
-    hidePlayers = shows
+RegisterNetEvent('azqb-nameplate:client:hideSync', function(hides)
+    hidePlayers = hides
+end)
+
+RegisterNetEvent('azqb-nameplate:client:allSync', function(players)
     allPlayers = players
 end)
 
@@ -52,13 +55,13 @@ CreateThread(function()
                 local remoteCoords = GetEntityCoords(ped)
                 local distance = #(remoteCoords - localCoords)
                 local tag = CreateMpGamerTag(ped, player.name, false, false, '', 0)
+                SetMpGamerTagAlpha(tag, gtComponent.AUDIO_ICON, 255)
                 if distance > distanceDisplay or not HasEntityClearLosToEntity(PlayerPedId(), ped, 17) or hidePlayers[player.cid] ~= nil or not showName then
                     SetMpGamerTagVisibility(tag, gtComponent.GAMER_NAME, false)
                     SetMpGamerTagVisibility(tag, gtComponent.AUDIO_ICON, false)
                 else
                     SetMpGamerTagVisibility(tag, gtComponent.GAMER_NAME, true)
                     SetMpGamerTagVisibility(tag, gtComponent.AUDIO_ICON, NetworkIsPlayerTalking(playerId))
-                    SetMpGamerTagAlpha(tag, gtComponent.AUDIO_ICON, 255)
                 end
             end
         end
