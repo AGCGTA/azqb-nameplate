@@ -1,5 +1,8 @@
+local second = 1000
+local minute = 60 * second
+
 Config = {
-    Cooldown = 2 * 60 * 1000,
-    Invisible = 30 * 1000,
-    WarnCountdown = 10 * 1000,
+    Cooldown = 5 * minute,
+    Invisible = 3 * minute,
+    WarnCountdown = 10 * second,
 }
