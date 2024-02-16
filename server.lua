@@ -3,6 +3,21 @@ local hidePlayers = {}
 local cooldownPlayers = {}
 local allPlayers = {}
 
+RegisterNetEvent("azqb-nameplate:server:hide-force", function()
+    local src = source
+    local player = QBCore.Functions.GetPlayer(src)
+    local cid = player.PlayerData.citizenid
+    if not IsPlayerAceAllowed(src, "admin") then
+        return
+    end
+    if hidePlayers[cid] ~= nil then
+        hidePlayers[cid] = nil
+    else
+        hidePlayers[cid] = true
+    end
+    TriggerClientEvent('azqb-nameplate:client:hideSync', -1, hidePlayers)
+end)
+
 RegisterNetEvent("azqb-nameplate:server:hide", function()
     local src = source
     local player = QBCore.Functions.GetPlayer(src)
