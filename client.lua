@@ -59,6 +59,7 @@ CreateThread(function()
                 local distance = #(remoteCoords - localCoords)
                 local tag = CreateMpGamerTag(ped, player.name, false, false, '', 0)
                 SetMpGamerTagAlpha(tag, gtComponent.AUDIO_ICON, 255)
+                SetMpGamerTagAlpha(tag, gtComponent.GAMER_NAME, 225)
                 if distance > distanceDisplay or not HasEntityClearLosToEntity(PlayerPedId(), ped, 17) or hidePlayers[player.cid] ~= nil or not showName then
                     SetMpGamerTagVisibility(tag, gtComponent.GAMER_NAME, false)
                     SetMpGamerTagVisibility(tag, gtComponent.AUDIO_ICON, false)
