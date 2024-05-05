@@ -2,6 +2,29 @@ local QBCore = exports['qb-core']:GetCoreObject()
 local hidePlayers = {}
 local cooldownPlayers = {}
 local allPlayers = {}
+local playerEmoji = {}
+
+function utf8.sub(s,i,j)
+    i=utf8.offset(s,i)
+    j=utf8.offset(s,j+1)-1
+    return string.sub(s,i,j)
+end
+
+RegisterNetEvent("azqb-nameplate:server:set-emoji", function(emoji)
+    if emoji == nil then
+        return
+    end
+    if emoji == "reset" then
+        emoji = ""
+    end
+    local src = source
+    local player = QBCore.Functions.GetPlayer(src)
+    local cid = player.PlayerData.citizenid
+    playerEmoji[cid] = utf8.sub(emoji, 1, 1)
+    TriggerClientEvent('azqb-nameplate:client:allSync', -1, allPlayers)
+end)
+
+
 
 RegisterNetEvent("azqb-nameplate:server:hide-force", function()
     local src = source
@@ -57,10 +80,11 @@ CreateThread(function()
     while true do
         local tempPlayers = {}
         for k, v in pairs(QBCore.Functions.GetQBPlayers()) do
+            local emoji = playerEmoji[v.PlayerData.citizenid] or ""
             tempPlayers[#tempPlayers + 1] = {
                 id = k,
                 cid = v.PlayerData.citizenid,
-                name = v.PlayerData.charinfo.firstname .. ' ' .. v.PlayerData.charinfo.lastname,
+                name = v.PlayerData.charinfo.firstname .. ' ' .. v.PlayerData.charinfo.lastname .. ' ' ..emoji,
             }
             Wait(0)
         end

@@ -5,7 +5,7 @@ local allPlayers = {}
 
 local showName = true
 local distanceDisplay = 30
-
+local allTags = {}
 local gtComponent = {
     GAMER_NAME = 0,
     CREW_TAG = 1,
@@ -47,6 +47,13 @@ RegisterCommand("togglename", function()
 end, false)
 RegisterKeyMapping("togglename", Lang:t('info.toggle_keymap_description'), 'keyboard', 'F11')
 
+RegisterCommand("setemoji", function(source, args, raw)
+    if args[1] == nil then
+        return
+    end
+    TriggerServerEvent("azqb-nameplate:server:set-emoji", args[1])
+end, false)
+
 CreateThread(function()
     while true do
         Wait(100)
@@ -57,7 +64,25 @@ CreateThread(function()
                 local ped = GetPlayerPed(playerId)
                 local remoteCoords = GetEntityCoords(ped)
                 local distance = #(remoteCoords - localCoords)
-                local tag = CreateMpGamerTag(ped, player.name, false, false, '', 0)
+                if allTags[ped] ~= nil then
+                    if player.name ~= allTags[ped]['name'] then
+                        print("reset")
+                        RemoveMpGamerTag(allTags[ped]['tag'])
+                        Wait(100)
+                        local localTag = CreateMpGamerTag(ped, player.name, false, false, '', 0)
+                        allTags[ped] = {
+                            ['name'] = player.name,
+                            ['tag'] = localTag
+                        }
+                    end
+                else
+                    local localTag = CreateMpGamerTag(ped, player.name, false, false, '', 0)
+                    allTags[ped] = {
+                        ['name'] = player.name,
+                        ['tag'] = localTag
+                    }
+                end
+                local tag = allTags[ped]['tag']
                 SetMpGamerTagAlpha(tag, gtComponent.AUDIO_ICON, 255)
                 SetMpGamerTagAlpha(tag, gtComponent.GAMER_NAME, 225)
                 if distance > distanceDisplay or not HasEntityClearLosToEntity(PlayerPedId(), ped, 17) or hidePlayers[player.cid] ~= nil or not showName then
