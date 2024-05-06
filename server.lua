@@ -14,13 +14,16 @@ RegisterNetEvent("azqb-nameplate:server:set-emoji", function(emoji)
     if emoji == nil then
         return
     end
+
     if emoji == "reset" then
         emoji = ""
+    else
+        emoji = utf8.sub(emoji, 1, 1)
     end
     local src = source
     local player = QBCore.Functions.GetPlayer(src)
     local cid = player.PlayerData.citizenid
-    playerEmoji[cid] = utf8.sub(emoji, 1, 1)
+    playerEmoji[cid] = emoji
     TriggerClientEvent('azqb-nameplate:client:allSync', -1, allPlayers)
 end)
 
